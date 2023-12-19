@@ -222,6 +222,8 @@ struct pygit2_filter_payload {
 static void pygit2_filter_payload_free(
     struct pygit2_filter_payload *payload)
 {
+    PyGILState_STATE gil = PyGILState_Ensure();
+
     if (payload == NULL)
         return;
     if (payload->py_filter != NULL)
@@ -231,6 +233,8 @@ static void pygit2_filter_payload_free(
     if (payload->stream != NULL)
         free(payload->stream);
     free(payload);
+
+    PyGILState_Release(gil);
 }
 
 static struct pygit2_filter_payload * pygit2_filter_payload_new(
